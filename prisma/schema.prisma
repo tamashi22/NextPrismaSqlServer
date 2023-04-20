@@ -86,7 +86,7 @@ model raw_material {
 }
 
 model sale_of_products {
-  id               Int               @id(map: "PK_sale_of_products") @default(autoincrement())
+  id               Int                 @id(map: "PK_sale_of_products") @default(autoincrement())
   product_id       Int?
   amount           Float?
   sum              Float?

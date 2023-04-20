@@ -17,7 +17,7 @@ export default async function handler(req, res) {
             amount ,         
             sum   ,          
             Date  ,          
-            employee_id ,
+            employee_id , 
           }
         })
         res.status(200).json({ message: 'created' })

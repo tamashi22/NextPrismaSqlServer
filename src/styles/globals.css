@@ -15,7 +15,6 @@
 
 .Wrapper{
   display: flex;
- 
   align-items: center;
   justify-content: center;
   padding: 5%;
@@ -95,6 +94,13 @@ button:hover{
   margin-left: 5px;
   border-radius: 5px;
 }
-
+.budget{
+  display: flex;
+  justify-content: space-around;
+}
+.fle{
+  display: flex;
+  justify-content: center;
+}
 
 

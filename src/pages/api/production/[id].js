@@ -3,7 +3,6 @@ export default async function handler(req, res) {
     const {
         product_id ,    
         amount ,         
-                  
         Date  ,          
         employee_id , 
     } = req.body
@@ -21,8 +20,7 @@ export default async function handler(req, res) {
         where: { id: Number(Id) },
         data: {
             product_id :product_id,    
-            amount:amount ,         
-                   
+            amount:amount ,        
             Date:Date  ,          
             employee_id :employee_id, 
         }
