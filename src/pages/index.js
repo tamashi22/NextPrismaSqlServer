@@ -1,14 +1,12 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import Link from 'next/link'
+import Head from "next/head";
+import Image from "next/image";
+import { Inter } from "@next/font/google";
+import Link from "next/link";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
-export default function Home({ employee ,job}) {
-  
+export default function Home({ employee, job }) {
   return (
-    
     <>
       <Head>
         <title>app</title>
@@ -16,74 +14,76 @@ export default function Home({ employee ,job}) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main >
-      <div>
-      
-    </div>
-    <div className='Wrapper'>
-      <div>
-        <h1 className='title'>Menu</h1>
-        <div className='buttonsWrap'>
-
-        <Link href="/sale" className='link'>
-        <div className='btn'>
-           <p>Sale of products</p> 
+      <main>
+        <div></div>
+        <div className="Wrapper">
+          <div>
+            <h1 className="title">Menu</h1>
+            <div className="buttonsWrap">
+              <Link href="/sale" className="link">
+                <div className="btn">
+                  <p>Sale of products</p>
+                </div>
+              </Link>
+              <Link href="/budget" className="link">
+                <div className="btn">
+                  <p>Budget</p>
+                </div>
+              </Link>
+              <Link href="/employee" className="link">
+                <div className="btn">
+                  <p>Employee</p>
+                </div>
+              </Link>
+              <Link href="/ingredients" className="link">
+                <div className="btn">
+                  <p>Ingrediests</p>
+                </div>
+              </Link>
+              <Link href="/job" className="link">
+                <div className="btn">
+                  <p>Job title</p>
+                </div>
+              </Link>
+              <Link href="/products" className="link">
+                <div className="btn">
+                  <p>Products</p>
+                </div>
+              </Link>
+              <Link href="/purchase" className="link">
+                <div className="btn">
+                  <p>Purchess raw materials</p>
+                </div>
+              </Link>
+              <Link href="/rawMaterials" className="link">
+                <div className="btn">
+                  <p>Raw materials</p>
+                </div>
+              </Link>
+              <Link href="/unit" className="link">
+                <div className="btn">
+                  <p>Unit</p>
+                </div>
+              </Link>
+              <Link href="/production" className="link">
+                <div className="btn">
+                  <p>The production </p>
+                </div>
+              </Link>
+              <Link href="/salaryes" className="link">
+                <div className="btn">
+                  <p>Salaries </p>
+                </div>
+              </Link>
+              <Link href="/bank" className="link">
+                <div className="btn">
+                  <p>Bank</p>
+                </div>
+              </Link>
+            </div>
+          </div>
         </div>
-        </Link>
-        <Link href="/budget" className='link'>
-        <div className='btn'>
-           <p>Budget</p> 
-        </div>
-        </Link>
-        <Link href="/employee" className='link'>
-        <div className='btn'>
-           <p>Employee</p> 
-        </div>
-        </Link>
-        <Link href="/ingredients" className='link'>
-        <div className='btn'>
-           <p>Ingrediests</p> 
-        </div>
-        </Link>
-        <Link href="/job" className='link'>
-        <div className='btn'>
-           <p>Job title</p> 
-        </div>
-        </Link>
-        <Link href="/products" className='link'>
-        <div className='btn'>
-           <p>Products</p> 
-        </div>
-        </Link>
-        <Link href="/purchase" className='link'>
-        <div className='btn'>
-           <p>Purchess raw materials</p> 
-        </div>
-        </Link>
-        <Link href="/rawMaterials" className='link'>
-        <div className='btn'>
-           <p>Raw materials</p> 
-        </div>
-        </Link>
-        <Link href="/unit" className='link'>
-        <div className='btn'>
-           <p>Unit</p> 
-        </div>
-        </Link>
-        <Link href="/production" className='link'>
-        <div className='btn'>
-           <p>The production </p> 
-        </div>
-        </Link>
-
-     
-        </div>
-      </div>
-    </div > 
-
-
       </main>
     </>
-  )
+  );
 }
-

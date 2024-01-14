@@ -25,12 +25,16 @@ function ingredients({ ingredients, product, materials }) {
   async function handleCreate(data) {
     let post = { ...data, product_id: parseInt(prod) };
     try {
-      fetch("api/createIngredient", {
-        body: JSON.stringify(post),
+      await fetch("/api/createIngredient", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        method: "POST",
+        body: JSON.stringify({
+          product_id: post.product_id,
+          raw_material: post.raw_material,
+          amount: post.amount,
+        }),
       }).then(() => {
         setForm({});
         refreshData();
@@ -57,11 +61,15 @@ function ingredients({ ingredients, product, materials }) {
     console.log(data, id);
 
     fetch(`api/ingredient/${id}`, {
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        product_id: data.product_id,
+        raw_material: data.raw_material,
+        amount: data.amount,
+      }),
       headers: {
         "Content-Type": "application/json",
       },
-      method: "PATCH",
+      method: "PUT",
     }).then(() => {
       setForm({});
       refreshData();

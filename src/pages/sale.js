@@ -10,33 +10,70 @@ export const getServerSideProps = async () => {
   const employee = JSON.parse(JSON.stringify(r));
   const p = await prisma.finished_product.findMany();
   const product = JSON.parse(JSON.stringify(p));
+  const u = await prisma.budget.findMany();
+  const budget = JSON.parse(JSON.stringify(u));
   return {
-    props: { sale, employee, product },
+    props: { sale, employee, product, budget },
   };
 };
-function sale({ sale, employee, product }) {
+function sale({ sale, employee, product, budget }) {
   console.log(sale);
   const router = useRouter();
+  const currentDate= new Date()
   const refreshData = () => {
     router.replace(router.asPath);
   };
   const [form, setForm] = useState({});
   const [up, setUp] = useState({});
+
   async function handleCreate(data) {
-    try {
-      fetch("api/createSale", {
+    let finishedProduct = product.find((p) => p.id === data.product_id);
+    console.log(finishedProduct);
+
+    if (finishedProduct.amount < data.amount) {
+      alert(`Not enough ${finishedProduct.name} on stock.`);
+    } else {
+      const newData = {
+        amount: finishedProduct.amount - data.amount,
+        sum:
+          finishedProduct.sum -
+          (finishedProduct.sum / finishedProduct.amount) * data.amount,
+      };
+      console.log("newData", newData);
+      console.log("oldButget", budget);
+      data.sum=newData.sum/newData.amount*data.amount
+      data.Date=!data.Date&&new Date(currentDate).toISOString() 
+      const newBudget={
+        budget_amount:budget[0].budget_amount+data.sum*(1+budget[0].percent/100)
+      }
+      console.log("newButget", newBudget);
+      await fetch("api/createSale", {
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
         },
         method: "POST",
-      }).then(() => {
+      })
+      await fetch(`api/product/${finishedProduct.id}`, {
+        body: JSON.stringify(newData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "PATCH",
+      })
+      await fetch(`api/budget/${1}`, {
+        body: JSON.stringify(newBudget),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "PATCH",
+      })
+      .then(() => {
         setForm({});
         refreshData();
       });
-    } catch {
-      console.log(error);
     }
+
     console.log(data);
   }
   async function handleDelete(id) {
@@ -113,6 +150,7 @@ function sale({ sale, employee, product }) {
           />
           <input
             className="input"
+            disabled
             onChange={(e) =>
               setForm({ ...form, sum: parseInt(e.target.value) })
             }
@@ -238,3 +276,5 @@ function sale({ sale, employee, product }) {
 }
 
 export default sale;
+// 2023-05-12T04:15:40.000Z
+// 2023-05-12T04:16:29.965Z

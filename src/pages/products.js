@@ -115,7 +115,7 @@ function products({ product, unit }) {
             className="input"
             type="text"
             onChange={(e) =>
-              setForm({ ...form, sum: parseInt(e.target.value) })
+              setForm({ ...form, sum: parseFloat(e.target.value) })
             }
           />
           <button className="btn2" type="submit">
@@ -180,7 +180,7 @@ function products({ product, unit }) {
                 className="input"
                 defaultValue={a.sum}
                 onChange={(e) =>
-                  setUp({ ...up, sum: parseInt(e.target.value) })
+                  setUp({ ...up, sum: parseFloat(e.target.value) })
                 }
                 type="text"
               />

@@ -5,7 +5,7 @@ generator client {
 datasource db {
   provider = "sqlserver"
   url      = env("DATABASE_URL")
-}
+} 
 
 model budget {
   id            Int    @id(map: "PK_budget") @default(autoincrement())
@@ -13,8 +13,6 @@ model budget {
   percent       Int?   @db.TinyInt
   bonus         Float? @db.Money
 }
-
-
 
 model employee {
   id                    Int                     @id(map: "PK_employee") @default(autoincrement())
@@ -25,6 +23,7 @@ model employee {
   phone_number          Decimal?                @db.Decimal(18, 0)
   Job_title             Job_title?              @relation(fields: [job_title], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_employee_Job_title")
   purchase_raw_material purchase_raw_material[]
+  salary                salary[]
   sale_of_products      sale_of_products[]
 }
 
@@ -41,7 +40,7 @@ model finished_product {
 
 model ingredients {
   id                                                  Int               @id(map: "PK_ingredients") @default(autoincrement())
-  product_id                                          Int?  
+  product_id                                          Int?
   raw_material                                        Int?              @unique
   amount                                              Float?
   finished_product                                    finished_product? @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ingredients_finished_product")
@@ -63,15 +62,14 @@ model production {
 }
 
 model purchase_raw_material {
-  id                                                            Int                             @id(map: "PK_purchase_raw_material_1") @default(autoincrement())
+  id                                                            Int           @id(map: "PK_purchase_raw_material_1") @default(autoincrement())
   raw_material                                                  Int?
   amount                                                        Float?
   sum                                                           Float?
-  date                                                          DateTime?                       @db.Date
+  date                                                          DateTime?     @db.Date
   employee_id                                                   Int?
-  employee                                                      employee?                       @relation(fields: [employee_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_purchase_raw_material_employee1")
-  raw_material_purchase_raw_material_raw_materialToraw_material raw_material?                   @relation("purchase_raw_material_raw_materialToraw_material", fields: [raw_material], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_purchase_raw_material_raw_material1")
-  // Trigger_Purchase_Raw_Material                                 Trigger_Purchase_Raw_Material[] @ignore
+  employee                                                      employee?     @relation(fields: [employee_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_purchase_raw_material_employee1")
+  raw_material_purchase_raw_material_raw_materialToraw_material raw_material? @relation("purchase_raw_material_raw_materialToraw_material", fields: [raw_material], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_purchase_raw_material_raw_material1")
 }
 
 model raw_material {
@@ -80,13 +78,13 @@ model raw_material {
   unit                                                                   Int?
   amount                                                                 Float?
   sum                                                                    Float?
-  ingredients_ingredients_raw_materialToraw_material                     ingredients[]           @relation("ingredients_raw_materialToraw_material")
+  ingredients_ingredients_raw_materialToraw_material                     ingredients?            @relation("ingredients_raw_materialToraw_material")
   purchase_raw_material_purchase_raw_material_raw_materialToraw_material purchase_raw_material[] @relation("purchase_raw_material_raw_materialToraw_material")
   Unit                                                                   Unit?                   @relation(fields: [unit], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_raw_material_Unit")
 }
 
 model sale_of_products {
-  id               Int                 @id(map: "PK_sale_of_products") @default(autoincrement())
+  id               Int               @id(map: "PK_sale_of_products") @default(autoincrement())
   product_id       Int?
   amount           Float?
   sum              Float?
@@ -106,24 +104,43 @@ model sysdiagrams {
   @@unique([principal_id, name], map: "UK_principal_name")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-// model Trigger_Purchase_Raw_Material {
-//   id                    Int                   @default(autoincrement())
-//   raw_material          Int?
-//   amount                Float?
-//   sum                   Float?
-//   date                  DateTime?             @db.Date
-//   employeeId            Int?
-//   activity              String?               @db.NChar(10)
-//   id_PRM                Int
-//   purchase_raw_material purchase_raw_material @relation(fields: [id_PRM], references: [id], onUpdate: NoAction, map: "FK_Trigger_Purchase_Raw_Material_purchase_raw_material")
-
-//   @@ignore
-// }
-
 model Unit {
   id               Int                @id(map: "PK_Unit") @default(autoincrement())
   name             String?            @db.NVarChar(50)
   finished_product finished_product[]
   raw_material     raw_material[]
+}
+
+model salary {
+  id                 Int       @id(map: "PK__salary__3213E83FAC431E17") @default(autoincrement())
+  employee_id        Int?
+  sale_counts        Int?
+  purchase_counts    Int?
+  production_counts  Int?
+  allActivity_counts Int?
+  year               Int?
+  month              Int?
+  amount             Float?
+  is_paid            Boolean?
+  employee           employee? @relation(fields: [employee_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__salary__employee__4C6B5938")
+}
+
+model Credit {
+  id            Int       @id(map: "PK__Credit__3213E83F9F52BC4F") @default(autoincrement())
+  amount        Float
+  interest_rate Float
+  penalty_rate  Float
+  duration      Int
+  start_date    DateTime  @db.DateTime
+  Payment       Payment[]
+}
+
+model Payment {
+  id           Int      @id(map: "PK__Payment__3213E83F62C7CA06") @default(autoincrement())
+  credit_id    Int
+  payment_date DateTime @db.DateTime
+  principal    Float
+  interest     Float
+  penalty      Float
+  Credit       Credit   @relation(fields: [credit_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_Payment_Credit")
 }
